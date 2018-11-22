@@ -287,6 +287,7 @@
             this.TeamListView.Location = new System.Drawing.Point(15, 49);
             this.TeamListView.MultiSelect = false;
             this.TeamListView.Name = "TeamListView";
+            this.TeamListView.ReadOnly = true;
             this.TeamListView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TeamListView.Size = new System.Drawing.Size(378, 150);
             this.TeamListView.TabIndex = 26;

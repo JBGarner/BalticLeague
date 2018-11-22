@@ -53,7 +53,7 @@
             this.VenueList.AllowUserToAddRows = false;
             this.VenueList.AllowUserToDeleteRows = false;
             this.VenueList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.VenueList.Location = new System.Drawing.Point(12, 46);
+            this.VenueList.Location = new System.Drawing.Point(14, 41);
             this.VenueList.MultiSelect = false;
             this.VenueList.Name = "VenueList";
             this.VenueList.ReadOnly = true;
