@@ -71,6 +71,14 @@ namespace BalticLeague
 
         private void SaveEdit_Click(object sender, EventArgs e)
         {
+
+            // Check all necessary fields have values. Throw a message if not
+            if (firstName.Text == "" || lastName.Text == "")
+            {
+                MessageBox.Show("The First Name and Last Name fields are required.");
+                return;
+            }
+
             string TeamName = PlayerTeam.SelectedText;
             // TODO: Get the code for a team from the Team combo box
             // string TeamCode = GetTeamCode(PlayerTeam);
@@ -88,7 +96,7 @@ namespace BalticLeague
             AllPlayers.Add(Player);
 
             // Save the player to the players.json file
-            this.SavePlayerToFile(Player);
+            this.SavePlayerToJsonFile(Player);
                         
             // Refresh the data in the form
             this.LoadPlayer(Player);
@@ -97,9 +105,10 @@ namespace BalticLeague
 
             // Set the new player variable back to false so it doesn't bleed to the next edit
             this.IsNewPlayer = false;
+            this.IsEditMode = false;
 
             // Put the form back in browse mode
-            this.ToggleFormEditMode(false);
+            this.ToggleFormEditMode(this.IsEditMode);
 
             // Clear any value in the stored playerBeforeEdit var
             this.PlayerBeforeEdit = null;
@@ -110,7 +119,7 @@ namespace BalticLeague
         /// If a file already exists with the players code, then deletes that file first.
         /// </summary>
         /// <param name="Player"></param>
-        private void SavePlayerToFile(Player Player)
+        private void SavePlayerToJsonFile(Player Player)
         {
             Utilities.SaveObjectAsJsonFile(Player, Utilities.PlayerDataFolder, Player.GetPlayerCode());
         }

@@ -48,6 +48,9 @@ namespace BalticLeague
 
         }
 
+        /// <summary>
+        /// Clears all data the data form fields
+        /// </summary>
         private void ClearForm()
         {
             TeamName.Text = null;
@@ -58,10 +61,17 @@ namespace BalticLeague
             PlayerCombo.SelectedValue = null;
         }
 
+        /// <summary>
+        /// Clears the data form and puts it in edit mode ready for a new entry
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddNewTeam_Click(object sender, EventArgs e)
         {
             this.ClearForm();
-            this.ToggleFormEditMode(true);
+            this.IsNewTeam = true;
+            this.IsEditMode = true;
+            this.ToggleFormEditMode(this.IsEditMode);
         }
 
         private void UpdateTeamPlayerList(string TeamCode)
@@ -142,9 +152,22 @@ namespace BalticLeague
 
         }
 
-        private Team GetTeamFromForm()
+        private Team GetTeamDetailsFromForm()
         {
             return new Team(TeamName.Text, this.GetVenue(TeamCode.Text), TeamCode.Text);
+        }
+
+        private void RefreshTeamForm(Team Team)
+        {
+            // Refresh the Team details in the form;
+            TeamName.Text = Team.Name;
+            TeamCode.Text = Team.TeamCode;
+            Venue.SelectedText = Team.HomeVenue.Name;
+
+            // Clear othe populated fields
+            PlayerCode.Text = null;
+            PlayerName.Text = null;
+            PlayerCombo.SelectedText = null;
         }
 
         // TODO: Get the venue from the source data files
@@ -155,7 +178,26 @@ namespace BalticLeague
 
         private void Delete_Click(object sender, EventArgs e)
         {
+            // TODO: Handle errors that will happen if you delete a team who has associated lineups, players or matches
+            Team Team = this.GetTeamDetailsFromForm();
+            // Remove the player from the player list
+            AllTeams.RemoveAll(t => t.TeamCode == Team.TeamCode);
+            // Delete the players' file
+            string FilePath = Utilities.TeamDataFolder + "\\" + Team.TeamCode + ".json";
+            if (File.Exists(FilePath))
+            {
+                File.Delete(FilePath);
+            }
+            this.UpdateTeamsList();
+        }
 
+        /// <summary>
+        /// Saves the team to disk as a json file
+        /// </summary>
+        /// <param name="Team"></param>
+        private void SaveTeamAsJsonFile(Team Team)
+        {
+            Utilities.SaveObjectAsJsonFile(Team, Utilities.TeamDataFolder, Team.TeamCode);
         }
 
         private void Cancel_Click(object sender, EventArgs e)
@@ -163,15 +205,55 @@ namespace BalticLeague
             this.LoadTeam(TeamBeforeEdit);
             this.IsEditMode = false;
             this.ToggleFormEditMode(this.IsEditMode);
+            this.TeamBeforeEdit = null;
         }
 
         private void Save_Click(object sender, EventArgs e)
         {
+            // Check all necessary fields have values. Throw a message if not
+            if (TeamName.Text == "" || Venue.SelectedText == "")
+            {
+                MessageBox.Show("The Team Name and Venue fields are required.");
+                return;
+            }
 
+            Team Team = this.GetTeamDetailsFromForm();
+
+            // If we're not adding a new team, remove the existing ateam from the teams list.
+            if (this.IsNewTeam == false)
+            {
+                AllTeams.RemoveAll(t => t.TeamCode == Team.TeamCode);
+            }
+
+            // Add the team to the teams list
+            AllTeams.Add(Team);
+
+            // Save the player to the players.json file
+            this.SaveTeamAsJsonFile(Team);
+
+            // Refresh the data in the form
+            this.LoadTeam(Team);
+            // Refresh the player view
+            this.UpdateTeamsList();
+
+            // Set the new player variable back to false so it doesn't bleed to the next edit
+            this.IsNewTeam = false;
+
+            // Put the form back in browse mode
+            this.ToggleFormEditMode(false);
+
+            // Clear any value in the stored playerBeforeEdit var
+            this.TeamBeforeEdit = null;
         }
 
+        /// <summary>
+        /// Puts the form in edit mode, and gets the team before any edits are made so we can cancel the edit
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Edit_Click(object sender, EventArgs e)
         {
+            this.TeamBeforeEdit = this.GetTeamDetailsFromForm();
             this.IsEditMode = true;
             this.ToggleFormEditMode(this.IsEditMode);
         }
