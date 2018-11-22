@@ -159,7 +159,7 @@ namespace BalticLeague
         /// </summary>
         /// <param name="PlayerCode"></param>
         /// <returns></returns>
-        private Player GetPlayer(string PlayerCode)
+        private Player GetPlayerByPlayerCode(string PlayerCode)
         {
             // Go through each player file until we find a venue with the given name.
             foreach (string file in Directory.EnumerateFiles(this.PlayerDataFolder, "*.json"))
@@ -196,6 +196,66 @@ namespace BalticLeague
             }
             // If we don't find a matching player, get a blank new one. Should be nice and obvious if there's an error.
             return new Team("", "", null);
+        }
+
+        /// <summary>
+        /// Gets a list of all players with the given team code
+        /// If we pass a null value to the team code param, then gets all players not in a team
+        /// </summary>
+        /// <param name="TeamCode"></param>
+        /// <returns></returns>
+        public List<string> GetPlayersInTeam(string TeamCode = null)
+        {
+            List<string> PlayerNames = new List<string>();
+            // Add a blank value to serve as a null selection and avoid saving changes accidentally.
+            PlayerNames.Add("");
+            // Go through each player file until we find a venue with the given name.
+            foreach (string file in Directory.EnumerateFiles(this.PlayerDataFolder, "*.json"))
+            {
+                string contents = File.ReadAllText(file);
+
+                Player Player = JsonConvert.DeserializeObject<Player>(contents);
+                // If the TeamCode is null, then get all players with a null or blank team code
+                if (TeamCode == null)
+                {
+                    if (Player.CurrentTeamCode == null || Player.CurrentTeamCode == "")
+                    {
+                        PlayerNames.Add(Player.FirstName + " " + Player.LastName);
+                    }
+                }
+                // Otherwise, get all players with a matching team code
+                else
+                {
+                    if (Player.CurrentTeamCode == TeamCode)
+                    {
+                        PlayerNames.Add(Player.FirstName + " " + Player.LastName);
+                    }
+                }
+            }
+            // If we don't find a matching player, get a blank new one. Should be nice and obvious if there's an error.
+            return PlayerNames;
+        }
+
+        /// <summary>
+        /// Get a player with a given full name
+        /// </summary>
+        /// <param name="PlayerCode"></param>
+        /// <returns></returns>
+        public Player GetPlayerByName(string FullName)
+        {
+            // Go through each player file until we find a venue with the given name.
+            foreach (string file in Directory.EnumerateFiles(this.PlayerDataFolder, "*.json"))
+            {
+                string contents = File.ReadAllText(file);
+
+                Player Player = JsonConvert.DeserializeObject<Team>(contents);
+                if (Player.FirstName + " " + Player.LastName == FullName)
+                {
+                    return Player;
+                }
+            }
+            // If we don't find a matching player, get a blank new one. Should be nice and obvious if there's an error.
+            return new Player("", "", false);
         }
     }
 }

@@ -222,7 +222,7 @@
             // 
             // AddPlayerToTeam
             // 
-            this.AddPlayerToTeam.Location = new System.Drawing.Point(261, 22);
+            this.AddPlayerToTeam.Location = new System.Drawing.Point(261, 24);
             this.AddPlayerToTeam.Name = "AddPlayerToTeam";
             this.AddPlayerToTeam.Size = new System.Drawing.Size(75, 23);
             this.AddPlayerToTeam.TabIndex = 21;

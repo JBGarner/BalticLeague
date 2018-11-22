@@ -17,6 +17,7 @@ namespace BalticLeague
         List<Team> AllTeams;
         List<Player> TeamPlayers;
         List<string> VenueLookup;
+        List<string> AvailablePlayers;
 
         Utilities Utilities = new Utilities();
 
@@ -28,6 +29,7 @@ namespace BalticLeague
             AllTeams = new List<Team>();
             TeamPlayers = new List<Player>();
             VenueLookup = new List<string>();
+            AvailablePlayers = new List<string>();
 
         }
 
@@ -166,6 +168,7 @@ namespace BalticLeague
         {
             this.UpdateVenueList();
             this.UpdateTeamsList();
+            this.UpdateAvailablePlayerList();
         }
 
         /// <summary>
@@ -314,7 +317,10 @@ namespace BalticLeague
             this.UpdateTeamPlayerList(Team.TeamCode);
             // Enable the delete button
             Delete.Enabled = true;
-            
+
+            // Enable the add player combo box and the Add player to team button
+            PlayerCombo.Enabled = true;
+            AddPlayerToTeam.Enabled = true;
         }
 
         /// <summary>
@@ -339,12 +345,14 @@ namespace BalticLeague
             Player.CurrentTeamCode = null;
             // Save the player
             Utilities.SaveObjectAsJsonFile(Player, Utilities.PlayerDataFolder, Player.GetPlayerCode());
+            this.UpdateAvailablePlayerList();
+            this.ClearPlayerDetails();
         }
 
         private void AddPlayerToTeam_Click(object sender, EventArgs e)
         {
             // Get the currently selected player from the grid
-            Player Player = this.GetPlayerDetailsFromGrid(TeamPlayerView.SelectedRows[0]);
+            Player Player = Utilities.Get;
             // Set the team code to null
             Player.CurrentTeamCode = TeamCode.Text;
             Utilities.SaveObjectAsJsonFile(Player, Utilities.PlayerDataFolder, Player.GetPlayerCode());
@@ -388,10 +396,48 @@ namespace BalticLeague
             this.RefreshVenueLookup();
         }
 
+        /// <summary>
+        /// Refreshes the venue lookup
+        /// </summary>
         private void RefreshVenueLookup()
         {
             Venue.DataSource = null;
             Venue.DataSource = VenueLookup;
+        }
+
+        /// <summary>
+        /// Refreshes the Available players lookup
+        /// </summary>
+        private void RefreshAvailablePlayersList()
+        {
+            PlayerCombo.DataSource = null;
+            PlayerCombo.DataSource = AvailablePlayers;
+        }
+
+        /// <summary>
+        /// Get a new version of the available players list (i.e. players not affiliated with a team
+        /// </summary>
+        private void UpdateAvailablePlayerList()
+        {
+            AvailablePlayers = Utilities.GetPlayersInTeam();
+            this.RefreshAvailablePlayersList();
+        }
+
+        /// <summary>
+        /// Clear the player details input fields
+        /// </summary>
+        private void ClearPlayerDetails()
+        {
+            PlayerName.Text = null;
+            PlayerCode.Text = null;
+        }
+        /// <summary>
+        /// Clears the player selection combo box
+        /// </summary>
+        private void ClearPlayerSelection()
+        {
+            // Select the first list value, which should always be a blank 
+            PlayerCombo.SelectedIndex = 0;
         }
     }
 }
