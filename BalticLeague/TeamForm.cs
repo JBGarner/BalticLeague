@@ -265,6 +265,11 @@ namespace BalticLeague
             
         }
 
+        /// <summary>
+        /// Saves the team to a json file.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Save_Click(object sender, EventArgs e)
         {
             // Check all necessary fields have values. Throw a message if not
@@ -368,6 +373,11 @@ namespace BalticLeague
             this.ClearPlayerDetails();
         }
 
+        /// <summary>
+        /// Update the player with the name in the player combo box to have the team code for the currently selected team.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AddPlayerToTeam_Click(object sender, EventArgs e)
         {
             string SelectedPlayer = PlayerCombo.SelectedItem.ToString();
@@ -390,6 +400,11 @@ namespace BalticLeague
             this.UpdateTeamPlayerList(TeamCode.Text);
         }
 
+        /// <summary>
+        /// Gets a Player object from the data shown in the grid
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns></returns>
         private Player GetPlayerDetailsFromGrid(DataGridViewRow row)
         {
             string FirstName = row.Cells[0].Value.ToString();
@@ -401,6 +416,11 @@ namespace BalticLeague
             return Player;
         }
 
+        /// <summary>
+        /// Gets a team object from the data shown in the grid
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns></returns>
         private Team GetTeamDetailsFromGrid(DataGridViewRow row)
         {
             string TeamName = row.Cells[0].Value.ToString();
@@ -410,7 +430,9 @@ namespace BalticLeague
             return Team;
         }
 
-        // Updates the venues list with a list of venues for lookups
+        /// <summary>
+        /// Updates the venues list with a list of venues for lookups
+        /// </summary>
         private void UpdateVenueList()
         {
             // Clear the existing lookup
