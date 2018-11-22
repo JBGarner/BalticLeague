@@ -10,14 +10,14 @@ namespace BalticLeague
     {
         public string Name { get; set; }
         public string TeamCode { get; set; }
-        public Venue HomeVenue { get; set; }
+        public string HomeVenueCode { get; set; }
 
         private readonly Utilities Utilities = new Utilities();
 
-        public Team(string Name, Venue Venue, string TeamCode = null)
+        public Team(string Name, string HomeVenueCode, string TeamCode = null)
         {
             this.Name = Name;
-            this.HomeVenue = Venue;
+            this.HomeVenueCode = HomeVenueCode;
             // If a team code is provided, then we use that. Else we overwrite
             if (TeamCode == null)
             {

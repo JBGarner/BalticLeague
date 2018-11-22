@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BalticLeague
 {
-    class Venue
+    class Venue 
     {
         public string Name { get; set; }
         public string Address { get; set; }

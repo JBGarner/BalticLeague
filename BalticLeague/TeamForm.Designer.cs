@@ -32,6 +32,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.AddNewTeam = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Delete = new System.Windows.Forms.Button();
+            this.Cancel = new System.Windows.Forms.Button();
+            this.Save = new System.Windows.Forms.Button();
+            this.Edit = new System.Windows.Forms.Button();
             this.AddVenue = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.Venue = new System.Windows.Forms.ComboBox();
@@ -49,10 +53,6 @@
             this.TeamListView = new System.Windows.Forms.DataGridView();
             this.TeamPlayerView = new System.Windows.Forms.DataGridView();
             this.label5 = new System.Windows.Forms.Label();
-            this.Edit = new System.Windows.Forms.Button();
-            this.Save = new System.Windows.Forms.Button();
-            this.Cancel = new System.Windows.Forms.Button();
-            this.Delete = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.PlayerDetails.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -108,6 +108,46 @@
             this.groupBox1.TabIndex = 18;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Team Details";
+            // 
+            // Delete
+            // 
+            this.Delete.Location = new System.Drawing.Point(297, 123);
+            this.Delete.Name = "Delete";
+            this.Delete.Size = new System.Drawing.Size(75, 23);
+            this.Delete.TabIndex = 31;
+            this.Delete.Text = "Delete";
+            this.Delete.UseVisualStyleBackColor = true;
+            this.Delete.Click += new System.EventHandler(this.Delete_Click);
+            // 
+            // Cancel
+            // 
+            this.Cancel.Location = new System.Drawing.Point(208, 123);
+            this.Cancel.Name = "Cancel";
+            this.Cancel.Size = new System.Drawing.Size(75, 23);
+            this.Cancel.TabIndex = 30;
+            this.Cancel.Text = "Cancel";
+            this.Cancel.UseVisualStyleBackColor = true;
+            this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
+            // 
+            // Save
+            // 
+            this.Save.Location = new System.Drawing.Point(112, 123);
+            this.Save.Name = "Save";
+            this.Save.Size = new System.Drawing.Size(75, 23);
+            this.Save.TabIndex = 29;
+            this.Save.Text = "Save";
+            this.Save.UseVisualStyleBackColor = true;
+            this.Save.Click += new System.EventHandler(this.Save_Click);
+            // 
+            // Edit
+            // 
+            this.Edit.Location = new System.Drawing.Point(13, 122);
+            this.Edit.Name = "Edit";
+            this.Edit.Size = new System.Drawing.Size(75, 23);
+            this.Edit.TabIndex = 7;
+            this.Edit.Text = "Edit";
+            this.Edit.UseVisualStyleBackColor = true;
+            this.Edit.Click += new System.EventHandler(this.Edit_Click);
             // 
             // AddVenue
             // 
@@ -188,6 +228,7 @@
             this.AddPlayerToTeam.TabIndex = 21;
             this.AddPlayerToTeam.Text = "Add to team";
             this.AddPlayerToTeam.UseVisualStyleBackColor = true;
+            this.AddPlayerToTeam.Click += new System.EventHandler(this.AddPlayerToTeam_Click);
             // 
             // RemovePlayerFromTeam
             // 
@@ -197,6 +238,7 @@
             this.RemovePlayerFromTeam.TabIndex = 22;
             this.RemovePlayerFromTeam.Text = "Remove from team";
             this.RemovePlayerFromTeam.UseVisualStyleBackColor = true;
+            this.RemovePlayerFromTeam.Click += new System.EventHandler(this.RemovePlayerFromTeam_Click);
             // 
             // PlayerDetails
             // 
@@ -248,6 +290,7 @@
             this.TeamListView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TeamListView.Size = new System.Drawing.Size(378, 150);
             this.TeamListView.TabIndex = 26;
+            this.TeamListView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TeamListView_CellClick);
             // 
             // TeamPlayerView
             // 
@@ -262,6 +305,7 @@
             this.TeamPlayerView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TeamPlayerView.Size = new System.Drawing.Size(351, 150);
             this.TeamPlayerView.TabIndex = 27;
+            this.TeamPlayerView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TeamPlayerView_CellClick);
             // 
             // label5
             // 
@@ -271,46 +315,6 @@
             this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 28;
             this.label5.Text = "Team Players";
-            // 
-            // Edit
-            // 
-            this.Edit.Location = new System.Drawing.Point(13, 122);
-            this.Edit.Name = "Edit";
-            this.Edit.Size = new System.Drawing.Size(75, 23);
-            this.Edit.TabIndex = 7;
-            this.Edit.Text = "Edit";
-            this.Edit.UseVisualStyleBackColor = true;
-            this.Edit.Click += new System.EventHandler(this.Edit_Click);
-            // 
-            // Save
-            // 
-            this.Save.Location = new System.Drawing.Point(112, 123);
-            this.Save.Name = "Save";
-            this.Save.Size = new System.Drawing.Size(75, 23);
-            this.Save.TabIndex = 29;
-            this.Save.Text = "Save";
-            this.Save.UseVisualStyleBackColor = true;
-            this.Save.Click += new System.EventHandler(this.Save_Click);
-            // 
-            // Cancel
-            // 
-            this.Cancel.Location = new System.Drawing.Point(208, 123);
-            this.Cancel.Name = "Cancel";
-            this.Cancel.Size = new System.Drawing.Size(75, 23);
-            this.Cancel.TabIndex = 30;
-            this.Cancel.Text = "Cancel";
-            this.Cancel.UseVisualStyleBackColor = true;
-            this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
-            // 
-            // Delete
-            // 
-            this.Delete.Location = new System.Drawing.Point(297, 123);
-            this.Delete.Name = "Delete";
-            this.Delete.Size = new System.Drawing.Size(75, 23);
-            this.Delete.TabIndex = 31;
-            this.Delete.Text = "Delete";
-            this.Delete.UseVisualStyleBackColor = true;
-            this.Delete.Click += new System.EventHandler(this.Delete_Click);
             // 
             // TeamForm
             // 

@@ -22,9 +22,7 @@ namespace BalticLeague
             this.FirstName = FirstName;
             this.LastName = LastName;
             this.IsInjured = IsInjured;
-            // For now, generate a random team code
-            // TODO: Add logic to get the proper team code
-            this.CurrentTeamCode = this.Utilities.GenerateCode(LastName, 4, 4, false);
+            this.CurrentTeamCode = CurrentTeamCode;
             
             // If a player code is provided, then use that player code 
             // Otherwise, generate a new one

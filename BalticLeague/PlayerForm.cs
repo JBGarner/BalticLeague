@@ -16,12 +16,14 @@ namespace BalticLeague
     {
         // Holds a list of all the players we're adding
         List<Player> AllPlayers;
+        List<string> TeamNames;
 
         public PlayerForm()
         {
             InitializeComponent();
             // Initialise the player list
             AllPlayers = new List<Player>();
+            TeamNames = new List<string>();
         }
 
         private bool IsNewPlayer = false;
@@ -79,17 +81,14 @@ namespace BalticLeague
                 return;
             }
 
-            string TeamName = PlayerTeam.SelectedText;
-            // TODO: Get the code for a team from the Team combo box
-            // string TeamCode = GetTeamCode(PlayerTeam);
-            
             // Get the player as a new player object, and serialise to JSON
             Player Player = this.GetPlayerDetailsFromForm();
+
             
             // If we're not adding a new player, remove the existing player from the player list.
             if (this.IsNewPlayer == false)
             {
-                AllPlayers.RemoveAll(p => p.GetPlayerCode() == Player.GetPlayerCode());
+                AllPlayers.RemoveAll(p => p.PlayerCode == Player.PlayerCode);
             }
 
             // Add the player to the player list
@@ -258,6 +257,7 @@ namespace BalticLeague
         private void PlayerForm_Load(object sender, EventArgs e)
         {
             this.UpdatePlayerList();
+            this.UpdateTeamList();
         }
 
         /// <summary>
@@ -273,7 +273,16 @@ namespace BalticLeague
             {
                 PlayerCode = null;
             }
-            Player myPlayer = new Player(firstName.Text, lastName.Text, Injured.Checked, PlayerTeam.SelectedText, PlayerCode);
+            // Get the team code for the team that we've selected
+            string TeamName = PlayerTeam.SelectedItem.ToString();
+            string TeamCode = null;
+            // Get the code for a team from the Team combo box if we've selected a team
+            if (TeamName != "" && TeamName != null)
+            {
+                TeamCode = Utilities.GetTeamByTeamName(TeamName).TeamCode;
+            }
+
+            Player myPlayer = new Player(firstName.Text, lastName.Text, Injured.Checked, TeamCode, PlayerCode);
             return myPlayer;
         }
 
@@ -293,6 +302,35 @@ namespace BalticLeague
             }
             // Finally refresh the list
             this.RefreshPlayerListView();
+        }
+
+        /// <summary>
+        /// Updates the venues list with a list of venues for lookups
+        /// </summary>
+        private void UpdateTeamList()
+        {
+            // Clear the existing lookup
+            TeamNames.Clear();
+            // First add a blank value to the venue list
+            TeamNames.Add("");
+            // Go through the list of venues and create a list of Venues for lookups
+            foreach (string file in Directory.EnumerateFiles(Utilities.TeamDataFolder, "*.json"))
+            {
+                string contents = File.ReadAllText(file);
+                Team Team = JsonConvert.DeserializeObject<Team>(contents);
+                TeamNames.Add(Team.Name);
+            }
+            // set the data source for the venue lookup
+            this.RefreshTeamLookup();
+        }
+
+        /// <summary>
+        /// Refreshes the data source of the team lookup
+        /// </summary>
+        private void RefreshTeamLookup()
+        {
+            PlayerTeam.DataSource = null;
+            PlayerTeam.DataSource = TeamNames;
         }
     }
 }

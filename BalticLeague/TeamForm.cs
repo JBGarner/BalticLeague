@@ -16,6 +16,7 @@ namespace BalticLeague
     {
         List<Team> AllTeams;
         List<Player> TeamPlayers;
+        List<string> VenueLookup;
 
         Utilities Utilities = new Utilities();
 
@@ -23,9 +24,11 @@ namespace BalticLeague
         {
             InitializeComponent();
 
-            // Initialise the team and team player lists
+            // Initialise the team, team player and venueCore lists
             AllTeams = new List<Team>();
             TeamPlayers = new List<Player>();
+            VenueLookup = new List<string>();
+
         }
 
         private bool IsNewTeam = false;
@@ -45,6 +48,30 @@ namespace BalticLeague
         private void ToggleFormEditMode(Boolean editMode)
         {
             TeamListView.Enabled = !editMode;
+            // Disable the player view, fields and add / remove from team buttons
+            // These will be enabled by other functions
+            TeamPlayerView.Enabled = false;
+            PlayerCode.Enabled = false;
+            PlayerName.Enabled = false;
+            PlayerCombo.Enabled = false;
+
+            // Add to team and remove from team should always be disabled unless we've done something to activate them
+            AddPlayerToTeam.Enabled = false;
+            RemovePlayerFromTeam.Enabled = false;
+
+            // The delete button should be disabled unless we've enabled it by selecting a row
+            Delete.Enabled = false;
+
+            // The add button should only be enabled if we're in browse mode
+            AddNewTeam.Enabled = !editMode;
+
+            // The save and cancel buttons should be enabled in edit mode only
+            Save.Enabled = editMode;
+            Cancel.Enabled = editMode;
+
+            // Team input fields should be enabled in edit mode
+            TeamName.Enabled = editMode;
+            Venue.Enabled = editMode;
 
         }
 
@@ -55,7 +82,7 @@ namespace BalticLeague
         {
             TeamName.Text = null;
             TeamCode.Text = null;
-            Venue.SelectedValue = null;
+            Venue.SelectedItem = VenueLookup.First();
             PlayerName.Text = null;
             PlayerCode.Text = null;
             PlayerCombo.SelectedValue = null;
@@ -137,43 +164,40 @@ namespace BalticLeague
         /// <param name="e"></param>
         private void TeamForm_Load(object sender, EventArgs e)
         {
+            this.UpdateVenueList();
             this.UpdateTeamsList();
         }
 
         /// <summary>
-        /// Loads a team into the data form
+        /// Get team details from the form to a team object
         /// </summary>
-        /// <param name="Team"></param>
-        private void LoadTeam(Team Team)
-        {
-            TeamName.Text = Team.Name;
-            TeamCode.Text = Team.TeamCode;
-            Venue.SelectedText = Team.HomeVenue.Name;
-
-        }
-
+        /// <returns></returns>
         private Team GetTeamDetailsFromForm()
         {
-            return new Team(TeamName.Text, this.GetVenue(TeamCode.Text), TeamCode.Text);
+            string _TeamCode = TeamCode.Text;
+            if (_TeamCode == "")
+            {
+                _TeamCode = null;
+            }
+            return new Team(TeamName.Text, Utilities.GetVenueByName(Venue.Text).VenueCode, _TeamCode);
         }
 
-        private void RefreshTeamForm(Team Team)
+        private void LoadTeam(Team Team)
         {
             // Refresh the Team details in the form;
             TeamName.Text = Team.Name;
             TeamCode.Text = Team.TeamCode;
-            Venue.SelectedText = Team.HomeVenue.Name;
+
+            // Get the name we expect to appear in the venue;
+            string VenueName = Utilities.GetVenueByCode(Team.HomeVenueCode).Name;
+
+            // Set the venue lookup to the relevant text value
+            Venue.SelectedIndex = VenueLookup.IndexOf(VenueName);
 
             // Clear othe populated fields
             PlayerCode.Text = null;
             PlayerName.Text = null;
             PlayerCombo.SelectedText = null;
-        }
-
-        // TODO: Get the venue from the source data files
-        private Venue GetVenue(string VenueCode)
-        {
-            return new Venue("", "", 0, "");
         }
 
         private void Delete_Click(object sender, EventArgs e)
@@ -189,6 +213,10 @@ namespace BalticLeague
                 File.Delete(FilePath);
             }
             this.UpdateTeamsList();
+            // Clear the form
+            this.ClearForm();
+            // Revert the form to browse mode;
+            this.ToggleFormEditMode(false);
         }
 
         /// <summary>
@@ -200,9 +228,21 @@ namespace BalticLeague
             Utilities.SaveObjectAsJsonFile(Team, Utilities.TeamDataFolder, Team.TeamCode);
         }
 
+        /// <summary>
+        /// Cancels the edit in progress. Reverts the form to browse mode and re-loads the team as it was before the edit started
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Cancel_Click(object sender, EventArgs e)
         {
-            this.LoadTeam(TeamBeforeEdit);
+            if(IsNewTeam)
+            {
+                this.ClearForm();
+            }
+            else
+            {
+                this.LoadTeam(TeamBeforeEdit);
+            }
             this.IsEditMode = false;
             this.ToggleFormEditMode(this.IsEditMode);
             this.TeamBeforeEdit = null;
@@ -211,7 +251,7 @@ namespace BalticLeague
         private void Save_Click(object sender, EventArgs e)
         {
             // Check all necessary fields have values. Throw a message if not
-            if (TeamName.Text == "" || Venue.SelectedText == "")
+            if (TeamName.Text == "" || Venue.SelectedItem.ToString() == "")
             {
                 MessageBox.Show("The Team Name and Venue fields are required.");
                 return;
@@ -256,6 +296,102 @@ namespace BalticLeague
             this.TeamBeforeEdit = this.GetTeamDetailsFromForm();
             this.IsEditMode = true;
             this.ToggleFormEditMode(this.IsEditMode);
+        }
+
+        /// <summary>
+        /// Loads the team details into the form
+        /// Enables the player list, and Updates it player list with all the players that play for the team
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TeamListView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Team Team = this.GetTeamDetailsFromGrid(TeamListView.SelectedRows[0]);
+            // Load the team into the form
+            this.LoadTeam(Team);
+            // Enable the player list and update it with the players in the team
+            TeamPlayerView.Enabled = true;
+            this.UpdateTeamPlayerList(Team.TeamCode);
+            // Enable the delete button
+            Delete.Enabled = true;
+            
+        }
+
+        /// <summary>
+        /// Populates the relevant read only fields on the team form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TeamPlayerView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Player Player = this.GetPlayerDetailsFromGrid(TeamPlayerView.SelectedRows[0]);
+            PlayerName.Text = Player.FirstName + " " + Player.LastName;
+            PlayerCode.Text = Player.PlayerCode;
+
+        }
+
+
+        private void RemovePlayerFromTeam_Click(object sender, EventArgs e)
+        {
+            // Get the currently selected player from the grid
+            Player Player = this.GetPlayerDetailsFromGrid(TeamPlayerView.SelectedRows[0]);
+            // Set the team code to null
+            Player.CurrentTeamCode = null;
+            // Save the player
+            Utilities.SaveObjectAsJsonFile(Player, Utilities.PlayerDataFolder, Player.GetPlayerCode());
+        }
+
+        private void AddPlayerToTeam_Click(object sender, EventArgs e)
+        {
+            // Get the currently selected player from the grid
+            Player Player = this.GetPlayerDetailsFromGrid(TeamPlayerView.SelectedRows[0]);
+            // Set the team code to null
+            Player.CurrentTeamCode = TeamCode.Text;
+            Utilities.SaveObjectAsJsonFile(Player, Utilities.PlayerDataFolder, Player.GetPlayerCode());
+        }
+
+        private Player GetPlayerDetailsFromGrid(DataGridViewRow row)
+        {
+            string FirstName = row.Cells[0].Value.ToString();
+            string LastName = row.Cells[1].Value.ToString();
+            string PlayerCode = row.Cells[4].Value.ToString();
+            string PlayerTeam = row.Cells[3].Value.ToString();
+            bool IsInjured = Convert.ToBoolean(row.Cells[2].Value);
+            Player Player = new Player(FirstName, LastName, IsInjured, PlayerTeam, PlayerCode);
+            return Player;
+        }
+
+        private Team GetTeamDetailsFromGrid(DataGridViewRow row)
+        {
+            string TeamName = row.Cells[0].Value.ToString();
+            string TeamCode = row.Cells[1].Value.ToString();
+            Venue Venue = Utilities.GetVenueByCode(row.Cells[2].Value.ToString());
+            Team Team = new Team(TeamName, Venue.VenueCode, TeamCode);
+            return Team;
+        }
+
+        // Updates the venues list with a list of venues for lookups
+        private void UpdateVenueList()
+        {
+            // Clear the existing lookup
+            VenueLookup.Clear();
+            // First add a blank value to the venue list
+            VenueLookup.Add("");
+            // Go through the list of venues and create a list of Venues for lookups
+            foreach (string file in Directory.EnumerateFiles(Utilities.VenueDataFolder, "*.json"))
+            {
+                string contents = File.ReadAllText(file);
+                Venue Venue = JsonConvert.DeserializeObject<Venue>(contents);
+                VenueLookup.Add(Venue.Name);
+            }
+            // set the data source for the venue lookup
+            this.RefreshVenueLookup();
+        }
+
+        private void RefreshVenueLookup()
+        {
+            Venue.DataSource = null;
+            Venue.DataSource = VenueLookup;
         }
     }
 }

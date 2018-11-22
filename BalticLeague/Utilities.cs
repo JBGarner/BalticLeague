@@ -107,5 +107,95 @@ namespace BalticLeague
                 writer.Close();
             }
         }
+
+        /// <summary>
+        /// Gets the first venue object from disk with the given venue name
+        /// If no venue is found with the name, returns a new venue with blank info.
+        /// </summary>
+        /// <param name="VenueName"></param>
+        /// <returns></returns>
+        public Venue GetVenueByName(string VenueName)
+        {
+            // Go through each venue file until we find a venue with the given name.
+            foreach (string file in Directory.EnumerateFiles(this.VenueDataFolder, "*.json"))
+            {
+                string contents = File.ReadAllText(file);
+
+                Venue Venue = JsonConvert.DeserializeObject<Venue>(contents);
+                if (Venue.Name == VenueName)
+                {
+                    return Venue;
+                }
+            }
+            // If we don't find a venue, get a blank new one. Should be nice and obvious if there's an error.
+            return new Venue("", "", 0);
+        }
+
+        /// <summary>
+        /// Gets the first venue object from disk with the given venue code
+        /// If no venue is found with the code, returns a new venue with blank info.
+        /// </summary>
+        /// <param name="VenueCode"></param>
+        /// <returns></returns>
+        public Venue GetVenueByCode(string VenueCode)
+        {
+            // Go through each venue file until we find a venue with the given name.
+            foreach (string file in Directory.EnumerateFiles(this.VenueDataFolder, "*.json"))
+            {
+                string contents = File.ReadAllText(file);
+
+                Venue Venue = JsonConvert.DeserializeObject<Venue>(contents);
+                if (Venue.VenueCode == VenueCode)
+                {
+                    return Venue;
+                }
+            }
+            // If we don't find a venue, get a blank new one. Should be nice and obvious if there's an error.
+            return new Venue("", "", 0);
+        }
+
+        /// <summary>
+        /// Get a player with a given player code
+        /// </summary>
+        /// <param name="PlayerCode"></param>
+        /// <returns></returns>
+        private Player GetPlayer(string PlayerCode)
+        {
+            // Go through each player file until we find a venue with the given name.
+            foreach (string file in Directory.EnumerateFiles(this.PlayerDataFolder, "*.json"))
+            {
+                string contents = File.ReadAllText(file);
+
+                Player Player = JsonConvert.DeserializeObject<Player>(contents);
+                if (Player.PlayerCode == PlayerCode)
+                {
+                    return Player;
+                }
+            }
+            // If we don't find a matching player, get a blank new one. Should be nice and obvious if there's an error.
+            return new Player("", "", false);
+        }
+
+        /// <summary>
+        /// Get a player with a given player code
+        /// </summary>
+        /// <param name="PlayerCode"></param>
+        /// <returns></returns>
+        public Team GetTeamByTeamName(string TeamName)
+        {
+            // Go through each player file until we find a venue with the given name.
+            foreach (string file in Directory.EnumerateFiles(this.TeamDataFolder, "*.json"))
+            {
+                string contents = File.ReadAllText(file);
+
+                Team Team = JsonConvert.DeserializeObject<Team>(contents);
+                if (Team.Name == TeamName)
+                {
+                    return Team;
+                }
+            }
+            // If we don't find a matching player, get a blank new one. Should be nice and obvious if there's an error.
+            return new Team("", "", null);
+        }
     }
 }
