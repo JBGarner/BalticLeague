@@ -248,7 +248,7 @@ namespace BalticLeague
             {
                 string contents = File.ReadAllText(file);
 
-                Player Player = JsonConvert.DeserializeObject<Team>(contents);
+                Player Player = JsonConvert.DeserializeObject<Player>(contents);
                 if (Player.FirstName + " " + Player.LastName == FullName)
                 {
                     return Player;

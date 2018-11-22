@@ -111,6 +111,7 @@
             // 
             // Delete
             // 
+            this.Delete.Enabled = false;
             this.Delete.Location = new System.Drawing.Point(297, 123);
             this.Delete.Name = "Delete";
             this.Delete.Size = new System.Drawing.Size(75, 23);
@@ -121,6 +122,7 @@
             // 
             // Cancel
             // 
+            this.Cancel.Enabled = false;
             this.Cancel.Location = new System.Drawing.Point(208, 123);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(75, 23);
@@ -131,6 +133,7 @@
             // 
             // Save
             // 
+            this.Save.Enabled = false;
             this.Save.Location = new System.Drawing.Point(112, 123);
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(75, 23);
@@ -141,6 +144,7 @@
             // 
             // Edit
             // 
+            this.Edit.Enabled = false;
             this.Edit.Location = new System.Drawing.Point(13, 122);
             this.Edit.Name = "Edit";
             this.Edit.Size = new System.Drawing.Size(75, 23);
@@ -222,6 +226,7 @@
             // 
             // AddPlayerToTeam
             // 
+            this.AddPlayerToTeam.Enabled = false;
             this.AddPlayerToTeam.Location = new System.Drawing.Point(261, 24);
             this.AddPlayerToTeam.Name = "AddPlayerToTeam";
             this.AddPlayerToTeam.Size = new System.Drawing.Size(75, 23);
@@ -232,6 +237,7 @@
             // 
             // RemovePlayerFromTeam
             // 
+            this.RemovePlayerFromTeam.Enabled = false;
             this.RemovePlayerFromTeam.Location = new System.Drawing.Point(270, 19);
             this.RemovePlayerFromTeam.Name = "RemovePlayerFromTeam";
             this.RemovePlayerFromTeam.Size = new System.Drawing.Size(75, 47);

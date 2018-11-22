@@ -61,11 +61,12 @@ namespace BalticLeague
             AddPlayerToTeam.Enabled = false;
             RemovePlayerFromTeam.Enabled = false;
 
-            // The delete button should be disabled unless we've enabled it by selecting a row
+            // The delete and  should be disabled unless we've enabled them by selecting a row
             Delete.Enabled = false;
 
-            // The add button should only be enabled if we're in browse mode
+            // The add and edit buttons should only be enabled if we're in browse mode
             AddNewTeam.Enabled = !editMode;
+            Edit.Enabled = !editMode;
 
             // The save and cancel buttons should be enabled in edit mode only
             Save.Enabled = editMode;
@@ -216,10 +217,20 @@ namespace BalticLeague
                 File.Delete(FilePath);
             }
             this.UpdateTeamsList();
-            // Clear the form
+            // Clear the form, revert to browse and disable the edit button
+            this.ClearFormAndSwitchToBrowseMode();
+        }
+
+        /// <summary>
+        /// Clears the form, reverts to browse mode and disables the edit button
+        /// </summary>
+        private void ClearFormAndSwitchToBrowseMode()
+        {
             this.ClearForm();
-            // Revert the form to browse mode;
-            this.ToggleFormEditMode(false);
+            this.IsEditMode = false;
+            this.IsNewTeam = false;
+            this.ToggleFormEditMode(this.IsEditMode);
+            Edit.Enabled = false;
         }
 
         /// <summary>
@@ -238,17 +249,20 @@ namespace BalticLeague
         /// <param name="e"></param>
         private void Cancel_Click(object sender, EventArgs e)
         {
-            if(IsNewTeam)
+            this.IsEditMode = false;
+            this.TeamBeforeEdit = null;
+
+            if (IsNewTeam)
             {
-                this.ClearForm();
+                // Clear the form, revert to browse and disable the edit button
+                this.ClearFormAndSwitchToBrowseMode();
             }
             else
             {
                 this.LoadTeam(TeamBeforeEdit);
+                this.ToggleFormEditMode(this.IsEditMode);
             }
-            this.IsEditMode = false;
-            this.ToggleFormEditMode(this.IsEditMode);
-            this.TeamBeforeEdit = null;
+            
         }
 
         private void Save_Click(object sender, EventArgs e)
@@ -315,8 +329,9 @@ namespace BalticLeague
             // Enable the player list and update it with the players in the team
             TeamPlayerView.Enabled = true;
             this.UpdateTeamPlayerList(Team.TeamCode);
-            // Enable the delete button
+            // Enable the edit and delete buttons
             Delete.Enabled = true;
+            Edit.Enabled = true;
 
             // Enable the add player combo box and the Add player to team button
             PlayerCombo.Enabled = true;
@@ -336,7 +351,11 @@ namespace BalticLeague
 
         }
 
-
+        /// <summary>
+        /// Updates and saves the player with a blank team value
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RemovePlayerFromTeam_Click(object sender, EventArgs e)
         {
             // Get the currently selected player from the grid
@@ -351,11 +370,24 @@ namespace BalticLeague
 
         private void AddPlayerToTeam_Click(object sender, EventArgs e)
         {
-            // Get the currently selected player from the grid
-            Player Player = Utilities.Get;
-            // Set the team code to null
+            string SelectedPlayer = PlayerCombo.SelectedItem.ToString();
+            // If no player is selected, do nothing.
+            if (SelectedPlayer == "" || SelectedPlayer == null)
+            {
+                MessageBox.Show("Please select a player to add to the team.");
+                return;
+            }
+            // Get the currently selected player by their name
+            Player Player = Utilities.GetPlayerByName(SelectedPlayer);
+            // Set the team code to the current teams' code
             Player.CurrentTeamCode = TeamCode.Text;
             Utilities.SaveObjectAsJsonFile(Player, Utilities.PlayerDataFolder, Player.GetPlayerCode());
+            // Once done, clear the combo and disable the add button
+            this.ClearPlayerSelection();
+            this.AddPlayerToTeam.Enabled = false;
+
+            // Finally, update the team player list
+            this.UpdateTeamPlayerList(TeamCode.Text);
         }
 
         private Player GetPlayerDetailsFromGrid(DataGridViewRow row)
