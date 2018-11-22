@@ -1,0 +1,16 @@
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\bin\Debug\BalticLeague.exe.config
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\bin\Debug\BalticLeague.exe
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\bin\Debug\BalticLeague.pdb
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\obj\Debug\BalticLeague.csprojAssemblyReference.cache
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\obj\Debug\BalticLeague.Home.resources
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\obj\Debug\BalticLeague.PlayerForm.resources
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\obj\Debug\BalticLeague.Properties.Resources.resources
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\obj\Debug\BalticLeague.TeamForm.resources
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\obj\Debug\BalticLeague.VenueForm.resources
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\obj\Debug\BalticLeague.csproj.GenerateResource.cache
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\obj\Debug\BalticLeague.csproj.CoreCompileInputs.cache
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\obj\Debug\BalticLeague.csproj.CopyComplete
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\obj\Debug\BalticLeague.exe
+C:\Users\Jeremy\Source\Repos\BL2\BalticLeague\obj\Debug\BalticLeague.pdb
