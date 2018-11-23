@@ -81,7 +81,7 @@ namespace BalticLeague
         }
 
         /// <summary>
-        /// Generic Utility to save an object as a json file 
+        /// Saves an object as a json file with a given name in a given folder
         /// </summary>
         /// <param name="Object">The Object to be serialized to Json and saved</param>
         /// <param name="FolderPath">The path to the folder where the file will be saved</param>
