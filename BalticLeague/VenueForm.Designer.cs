@@ -69,7 +69,7 @@
             this.AddVenue.Name = "AddVenue";
             this.AddVenue.Size = new System.Drawing.Size(75, 23);
             this.AddVenue.TabIndex = 1;
-            this.AddVenue.Text = "AddVenue";
+            this.AddVenue.Text = "Add Venue";
             this.AddVenue.UseVisualStyleBackColor = true;
             this.AddVenue.Click += new System.EventHandler(this.AddVenue_Click);
             // 

@@ -54,6 +54,8 @@ namespace BalticLeague
             lastName.Enabled = editMode;
             Injured.Enabled = editMode;
             PlayerTeam.Enabled = editMode;
+            // Delete button should be disabled. It's enabled by clicking a player in the grid
+            DeletePlayer.Enabled = false;
         }
 
         private void ClearForm()
@@ -204,6 +206,18 @@ namespace BalticLeague
             lastName.Text = Player.LastName;
             playerCode.Text = Player.PlayerCode;
             Injured.Checked = Player.IsInjured;
+            // Load the team from the team lookup
+            // Get the team name for the team
+            // If the player has no team code, use ""
+            if (Player.CurrentTeamCode == null)
+            {
+                string NoTeam = "";
+                PlayerTeam.SelectedIndex = TeamNames.IndexOf(NoTeam);
+            } else
+            {
+                Team Team = Utilities.GetTeamByTeamCode(Player.CurrentTeamCode);
+                PlayerTeam.SelectedIndex = TeamNames.IndexOf(Team.Name);
+            }
         }
 
         /// <summary>
@@ -222,6 +236,8 @@ namespace BalticLeague
             Player Player = GetPlayerFromDataGrid(PlayerList.SelectedRows[0]);
             // Add the values to the relevant fields
             this.LoadPlayer(Player);
+            // Enable the delete button
+            DeletePlayer.Enabled = true;
         }
         /// <summary>
         /// Gets a player object for a given list view row
@@ -233,7 +249,10 @@ namespace BalticLeague
             string FirstName = row.Cells[0].Value.ToString();
             string LastName = row.Cells[1].Value.ToString();
             string PlayerCode = row.Cells[4].Value.ToString();
-            string PlayerTeam = row.Cells[3].Value.ToString();
+            string PlayerTeam = null;
+            if (row.Cells[3].Value != null) {
+                PlayerTeam = row.Cells[3].Value.ToString();
+            }
             bool IsInjured = Convert.ToBoolean(row.Cells[2].Value);
             Player Player = new Player(FirstName, LastName, IsInjured, PlayerTeam, PlayerCode);
             return Player;

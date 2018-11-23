@@ -177,9 +177,9 @@ namespace BalticLeague
         }
 
         /// <summary>
-        /// Get a player with a given player code
+        /// Get a team with a given team name
         /// </summary>
-        /// <param name="PlayerCode"></param>
+        /// <param name="TeamName"></param>
         /// <returns></returns>
         public Team GetTeamByTeamName(string TeamName)
         {
@@ -190,6 +190,28 @@ namespace BalticLeague
 
                 Team Team = JsonConvert.DeserializeObject<Team>(contents);
                 if (Team.Name == TeamName)
+                {
+                    return Team;
+                }
+            }
+            // If we don't find a matching player, get a blank new one. Should be nice and obvious if there's an error.
+            return new Team("", "", null);
+        }
+
+        /// <summary>
+        /// Get a player with a given player code
+        /// </summary>
+        /// <param name="PlayerCode"></param>
+        /// <returns></returns>
+        public Team GetTeamByTeamCode(string TeamCode)
+        {
+            // Go through each player file until we find a venue with the given name.
+            foreach (string file in Directory.EnumerateFiles(this.TeamDataFolder, "*.json"))
+            {
+                string contents = File.ReadAllText(file);
+
+                Team Team = JsonConvert.DeserializeObject<Team>(contents);
+                if (Team.TeamCode == TeamCode)
                 {
                     return Team;
                 }
