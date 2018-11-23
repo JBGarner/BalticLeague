@@ -58,6 +58,9 @@ namespace BalticLeague
             DeletePlayer.Enabled = false;
         }
 
+        /// <summary>
+        /// Clears the player details form
+        /// </summary>
         private void ClearForm()
         {
             firstName.Text = null;
@@ -66,6 +69,11 @@ namespace BalticLeague
             Injured.Checked = false;
         }
 
+        /// <summary>
+        /// Puts the form in edit mode, and stores a copy of the forms current contents as a Player object
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EditPlayer_Click(object sender, EventArgs e)
         {
             // Store the player details as they are before we edit anything
@@ -73,6 +81,11 @@ namespace BalticLeague
             this.ToggleFormEditMode(true);
         }
 
+        /// <summary>
+        /// Saves the Player to disk as a json file. Adds the new player to the players grid.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SaveEdit_Click(object sender, EventArgs e)
         {
 

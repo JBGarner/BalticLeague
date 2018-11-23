@@ -286,6 +286,11 @@ namespace BalticLeague
             Capacity.Text = Venue.Capacity.ToString();
         }
 
+        /// <summary>
+        /// Loads the venue from the clicked row into the data form, and ensures the form is in browse mode.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void VenueList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             // Do nothing if we're in edit mode, as we don't want to overwirte an edit in progress

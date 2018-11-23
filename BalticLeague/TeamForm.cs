@@ -47,6 +47,10 @@ namespace BalticLeague
             Hide();
         }
 
+        /// <summary>
+        /// Toggles the form between edit and browse mode, enabling and disabling form elements as required
+        /// </summary>
+        /// <param name="editMode"></param>
         private void ToggleFormEditMode(Boolean editMode)
         {
             TeamListView.Enabled = !editMode;
@@ -104,6 +108,10 @@ namespace BalticLeague
             this.ToggleFormEditMode(this.IsEditMode);
         }
 
+        /// <summary>
+        /// Updates the team player list used to populate the team player grid
+        /// </summary>
+        /// <param name="TeamCode">The team code for the team the players belong to</param>
         private void UpdateTeamPlayerList(string TeamCode)
         {
             // The TeamPlayers list should be a list of the contents of all files in the Data/players folder
@@ -126,7 +134,9 @@ namespace BalticLeague
             // Finally refresh the list
             this.RefreshTeamPlayerGridView();
         }
-
+        /// <summary>
+        /// Updates the list of all teams available for display in the team grid
+        /// </summary>
         private void UpdateTeamsList()
         {
             // The AllTeams list should be a list of the contents of all files in the Data/teams folder
