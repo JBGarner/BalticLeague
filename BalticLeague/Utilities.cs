@@ -16,6 +16,7 @@ namespace BalticLeague
     class Utilities
     {
 
+        // Folder locations for data stored by this application
         public readonly string PlayerDataFolder = @"../../Data/players";
         public readonly string TeamDataFolder = @"../../Data/teams";
         public readonly string VenueDataFolder = @"../../Data/venues";
@@ -57,29 +58,13 @@ namespace BalticLeague
             return RandomNumber.ToString() + CodeChars;
         }
 
+        /// <summary>
+        /// Show an alert box with a given message value
+        /// </summary>
+        /// <param name="message"></param>
         public void ShowAlertMessage(string message)
         {
             MessageBox.Show(message);
-        }
-
-        /// <summary>
-        /// Gets a random number n digits long
-        /// </summary>
-        /// <param name="NumberOfDigits"></param>
-        /// <returns></returns>
-        private int GetRandomNumer(int NumberOfDigits)
-        {
-            double Min = 1;
-            double Max = 9;
-
-            if (NumberOfDigits > 1)
-            {
-                Min = Min * Math.Pow(10, NumberOfDigits - 1);
-                Max = (Max + 1) * Math.Pow(10, NumberOfDigits - 1) - 1;
-            }
-            Random _random = new Random();
-            int RandomNumber = _random.Next(Convert.ToInt32(Min), Convert.ToInt32(Max));
-            return RandomNumber;
         }
 
         /// <summary>
@@ -280,6 +265,28 @@ namespace BalticLeague
             }
             // If we don't find a matching player, get a blank new one. Should be nice and obvious if there's an error.
             return new Player("", "", false);
+        }
+
+        /// PRIVATE METHODS ///
+
+        /// <summary>
+        /// Gets a random number n digits long
+        /// </summary>
+        /// <param name="NumberOfDigits"></param>
+        /// <returns></returns>
+        private int GetRandomNumer(int NumberOfDigits)
+        {
+            double Min = 1;
+            double Max = 9;
+
+            if (NumberOfDigits > 1)
+            {
+                Min = Min * Math.Pow(10, NumberOfDigits - 1);
+                Max = (Max + 1) * Math.Pow(10, NumberOfDigits - 1) - 1;
+            }
+            Random _random = new Random();
+            int RandomNumber = _random.Next(Convert.ToInt32(Min), Convert.ToInt32(Max));
+            return RandomNumber;
         }
     }
 }

@@ -17,6 +17,11 @@ namespace BalticLeague
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Navigates to the Players form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HomePlayers_Click(object sender, EventArgs e)
         {
             PlayerForm playerForm = new PlayerForm
@@ -27,6 +32,11 @@ namespace BalticLeague
             Hide();
         }
 
+        /// <summary>
+        /// Navigates to the Teams form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HomeTeams_Click(object sender, EventArgs e)
         {
             TeamForm teamForm = new TeamForm
@@ -37,6 +47,11 @@ namespace BalticLeague
             Hide();
         }
 
+        /// <summary>
+        /// Navigates to the Venues form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Venues_Click(object sender, EventArgs e)
         {
             VenueForm venueForm = new VenueForm
@@ -47,16 +62,31 @@ namespace BalticLeague
             Hide();
         }
 
+        /// <summary>
+        /// Navigates to the Matches form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Matches_Click(object sender, EventArgs e)
         {
-
+            // TODO: implement once the form is complete
         }
 
+        /// <summary>
+        /// Navigates to the lineup form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Lineups_Click(object sender, EventArgs e)
         {
-
+            // TODO: implement once the form is complete
         }
 
+        /// <summary>
+        /// Opens a pop-up box with help on using the application
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Help_Click(object sender, EventArgs e)
         {
             string HelpMessage =

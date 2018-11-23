@@ -37,6 +37,11 @@ namespace BalticLeague
         private bool IsEditMode = false;
         private Team TeamBeforeEdit;
 
+        /// <summary>
+        /// Go back to the home page and close the current form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Home_Click(object sender, EventArgs e)
         {
             Home home = new Home
