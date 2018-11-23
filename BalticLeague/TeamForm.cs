@@ -88,7 +88,7 @@ namespace BalticLeague
             Venue.SelectedItem = VenueLookup.First();
             PlayerName.Text = null;
             PlayerCode.Text = null;
-            PlayerCombo.SelectedValue = null;
+            PlayerCombo.SelectedItem = AvailablePlayers.First();
         }
 
         /// <summary>
