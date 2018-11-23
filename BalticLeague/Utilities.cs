@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -31,10 +32,11 @@ namespace BalticLeague
         /// <returns></returns>
         public string GenerateCode(string Chars, int NumChars, int NumDigits, bool CharsFirst)
         {
-            // Remove any spaces from the Chars string
-            string TrimmedChars = Chars.Replace(" ", "");
+            // Remove any spaces or non-alphabetic from the Chars string
+            Regex Regex = new Regex("[^a-zA-Z]");
+            Chars = Regex.Replace(Chars, "");
             // Get the first 4 chars of the last name to a string and convert to upper case
-            string CodeChars = TrimmedChars.Substring(0, NumChars).ToUpper();
+            string CodeChars = Chars.Substring(0, NumChars).ToUpper();
             // If the result is less than 3 characters (e.g. because the team name was less than 3 chars to start with)
             // Then add however many 'X's are required to bring it to the required number
             if (CodeChars.Length < NumChars)
