@@ -338,6 +338,10 @@ namespace BalticLeague
             Delete.Enabled = true;
             Edit.Enabled = true;
 
+            // Clear the player form
+            this.ClearPlayerDetails();
+            RemovePlayerFromTeam.Enabled = false;
+
             // Enable the add player combo box and the Add player to team button
             PlayerCombo.Enabled = true;
             AddPlayerToTeam.Enabled = true;
@@ -353,7 +357,8 @@ namespace BalticLeague
             Player Player = this.GetPlayerDetailsFromGrid(TeamPlayerView.SelectedRows[0]);
             PlayerName.Text = Player.FirstName + " " + Player.LastName;
             PlayerCode.Text = Player.PlayerCode;
-
+            // Enable the remove button
+            RemovePlayerFromTeam.Enabled = true;
         }
 
         /// <summary>
@@ -371,6 +376,8 @@ namespace BalticLeague
             Utilities.SaveObjectAsJsonFile(Player, Utilities.PlayerDataFolder, Player.GetPlayerCode());
             this.UpdateAvailablePlayerList();
             this.ClearPlayerDetails();
+            // Disable the remove button
+            RemovePlayerFromTeam.Enabled = false;
         }
 
         /// <summary>
