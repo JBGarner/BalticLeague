@@ -250,8 +250,6 @@ namespace BalticLeague
         private void Cancel_Click(object sender, EventArgs e)
         {
             this.IsEditMode = false;
-            this.TeamBeforeEdit = null;
-
             if (IsNewTeam)
             {
                 // Clear the form, revert to browse and disable the edit button
@@ -260,6 +258,7 @@ namespace BalticLeague
             else
             {
                 this.LoadTeam(TeamBeforeEdit);
+                this.TeamBeforeEdit = null;
                 this.ToggleFormEditMode(this.IsEditMode);
             }
             
@@ -370,11 +369,13 @@ namespace BalticLeague
         {
             // Get the currently selected player from the grid
             Player Player = this.GetPlayerDetailsFromGrid(TeamPlayerView.SelectedRows[0]);
+            // Get the existing team code
             // Set the team code to null
             Player.CurrentTeamCode = null;
             // Save the player
             Utilities.SaveObjectAsJsonFile(Player, Utilities.PlayerDataFolder, Player.GetPlayerCode());
             this.UpdateAvailablePlayerList();
+            this.UpdateTeamPlayerList(TeamCode.Text);
             this.ClearPlayerDetails();
             // Disable the remove button
             RemovePlayerFromTeam.Enabled = false;
