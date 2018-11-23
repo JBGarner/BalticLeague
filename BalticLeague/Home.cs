@@ -56,5 +56,18 @@ namespace BalticLeague
         {
 
         }
+
+        private void Help_Click(object sender, EventArgs e)
+        {
+            string HelpMessage =
+                "Click the 'Players' button to add, edit or delete a player.\n\n" +
+                "Click the 'Teams' button to add, edit or delete teams, and add or remove players to or from the team.\n\n" +
+                "Click the 'Venues' button to add, edit or delete a venue.\n\n" +
+                "Click the 'Lineups' button to add, edit or delete a lineup for a team.\n\n" +
+                "Click the 'Matches' button to add, edit or delete a Match";
+
+
+            MessageBox.Show(HelpMessage);
+        }
     }
 }
