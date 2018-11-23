@@ -261,7 +261,6 @@ namespace BalticLeague
                 this.TeamBeforeEdit = null;
                 this.ToggleFormEditMode(this.IsEditMode);
             }
-            
         }
 
         /// <summary>
